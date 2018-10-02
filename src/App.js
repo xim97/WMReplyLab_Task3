@@ -11,6 +11,8 @@ class App extends Component {
       showingDate: new Date(Date.now())
     }
 
+    this.setToday = this.setToday.bind(this);
+
     this.setNextMonth = this.setNextMonth.bind(this);
     this.setPrevMonth = this.setPrevMonth.bind(this);
   }
@@ -29,11 +31,18 @@ class App extends Component {
     });
   }
 
+  setToday() {
+    this.setState({
+      showingDate: new Date(Date.now())
+    })
+  }
+
   render() {
     return (
       <div className="App">
         <LeftPart />
         <RightPart
+          setToday={this.setToday}
           setNextMonth={this.setNextMonth}
           setPrevMonth={this.setPrevMonth}
           showingDate={this.state.showingDate}

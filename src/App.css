@@ -18,7 +18,14 @@
   border-left: 1px solid black;
 }
 
-.right-part .month-picker {
+.right-part .header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.right-part .header .month-picker {
   align-self: flex-end;
   display: flex;
   flex-direction: row;
@@ -27,11 +34,11 @@
   margin: 10px 5%;
 }
 
-.right-part .month-picker button {
+.right-part .header button {
   outline: none;
 }
 
-.right-part .month-picker p {
+.right-part .header .month-picker p {
   text-align: center;
   margin: 0 2%;
 }
