@@ -8,13 +8,22 @@ class App extends Component {
     super(props);
 
     this.state = {
-      showingDate: new Date(Date.now())
+      showingDate: new Date(Date.now()),
+      viewType: "full"
     }
 
     this.setToday = this.setToday.bind(this);
 
     this.setNextMonth = this.setNextMonth.bind(this);
     this.setPrevMonth = this.setPrevMonth.bind(this);
+
+    this.handleChangeViewTypeInput = this.handleChangeViewTypeInput.bind(this);
+  }
+
+  handleChangeViewTypeInput(event) {
+    this.setState({
+      viewType: event.target.value
+    });
   }
 
   setNextMonth() {
@@ -25,7 +34,7 @@ class App extends Component {
   }
 
   setPrevMonth() {
-    const currentDate = this.state.showingDate;    
+    const currentDate = this.state.showingDate;
     this.setState({
       showingDate: new Date(currentDate.setMonth(currentDate.getMonth() - 1))
     });
@@ -42,6 +51,8 @@ class App extends Component {
       <div className="App">
         <LeftPart />
         <RightPart
+          handleChangeViewTypeInput={this.handleChangeViewTypeInput}
+          viewType={this.state.viewType}
           setToday={this.setToday}
           setNextMonth={this.setNextMonth}
           setPrevMonth={this.setPrevMonth}
