@@ -15,7 +15,10 @@ export default class CalendarColumn extends Component {
 
                     this.props.element.map(item => {
                         return (
-                            <CalendarCell key={Date.parse(item)}
+                            <CalendarCell
+                                handleClickOnCell={this.props.handleClickOnCell}
+                                events={this.props.events}
+                                key={Date.parse(item)}
                                 item={item}
                                 viewType={this.props.viewType}
                                 showingDate={this.props.showingDate}

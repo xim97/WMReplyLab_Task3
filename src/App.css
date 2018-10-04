@@ -11,7 +11,19 @@
 
 .left-part {
   width: 30%;
-  border-right: 1px solid black;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 20px 0 0 20px;
+}
+
+.left-part label {
+  margin: 20px 0;
+}
+
+.left-part input[type="button"] {
+  margin-top: 20px;
 }
 
 .right-part {
@@ -19,7 +31,6 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  border-left: 1px solid black;
   padding: 10px;
 }
 

@@ -22,6 +22,8 @@ export default class RightPart extends Component {
                     showingDate={this.props.showingDate}
                 />                
                 <Calendar
+                        handleClickOnCell={this.props.handleClickOnCell}
+                        events={this.props.events}
                         viewType={this.props.viewType}
                         numberOfWeeks={numberOfWeeks}
                         dataForGrid={dataForGrid}
