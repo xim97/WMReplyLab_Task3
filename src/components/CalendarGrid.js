@@ -9,11 +9,7 @@ export default class CalendarGrid extends Component {
                     this.props.dataForGrid.map((element, index) => {
                         return (
                             <CalendarColumn
-                                handleClickOnCell={this.props.handleClickOnCell}
-                                events={this.props.events}
                                 key={index}
-                                showingDate={this.props.showingDate}
-                                viewType={this.props.viewType}
                                 element={element}
                                 index={index}
                             />

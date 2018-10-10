@@ -1,22 +1,12 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 
-export default class TodayComponent extends Component {
-
-    constructor(props) {
-        super(props);
-
-        this.handleClickTodayButton = this.handleClickTodayButton.bind(this);
-    }
-
-    handleClickTodayButton() {
-        this.props.setToday();
-    }
-
+class TodayComponent extends Component {
     render() {
         return (
             <button
                 className="today-button"
-                onClick={this.handleClickTodayButton}
+                onClick={() => this.props.today()}
             >
                 Сегодня
             </button>
@@ -24,3 +14,9 @@ export default class TodayComponent extends Component {
 
     }
 }
+
+export default connect(() => ({}),
+    dispatch => ({
+        today: () => dispatch({ type: "SET_SHOWING_DATE_TODAY" })
+    })
+)(TodayComponent);

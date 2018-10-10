@@ -7,18 +7,9 @@ export default class HeaderRightPart extends Component {
     render() {
         return (
             <div className="header">
-                <ViewPicker
-                    handleChangeViewTypeInput={this.props.handleChangeViewTypeInput}
-                    viewType={this.props.viewType}
-                />
-                <TodayComponent
-                    setToday={this.props.setToday}
-                />
-                <MonthPicker
-                    setNextMonth={this.props.setNextMonth}
-                    setPrevMonth={this.props.setPrevMonth}
-                    showingDate={this.props.showingDate}
-                />
+                <ViewPicker />
+                <TodayComponent />
+                <MonthPicker />
             </div>
         );
     }

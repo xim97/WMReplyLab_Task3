@@ -1,38 +1,31 @@
 import React, { Component } from "react";
 import getMonthName from "../utils/getMonthName";
+import { connect } from "react-redux";
 
-export default class MonthPicker extends Component {
-
-    constructor(props) {
-        super(props);
-
-        this.handleClickNextMonth = this.handleClickNextMonth.bind(this);
-        this.handleClickPrevMonth = this.handleClickPrevMonth.bind(this);
-    }
-
-    handleClickNextMonth() {
-        this.props.setNextMonth();
-    }
-
-    handleClickPrevMonth() {
-        this.props.setPrevMonth();
-    }
-
+class MonthPicker extends Component {
     render() {
-        const showingDate = new Date(this.props.showingDate);
         return (
             <div className="month-picker">
-                <button onClick={this.handleClickPrevMonth}>Пред. месяц</button>
+                <button onClick={() => this.props.prevMonth()}>Пред. месяц</button>
                 <p>
                     {
-                        getMonthName(showingDate.getMonth()) + ", "
-                    }
-                    {
-                        showingDate.getFullYear()
+                        getMonthName(this.props.showingDate.getMonth()) + ", " +
+                        this.props.showingDate.getFullYear()
                     }
                 </p>
-                <button onClick={this.handleClickNextMonth}>След. месяц</button>
+                <button onClick={() => this.props.nextMonth()}>След. месяц</button>
             </div>
         );
     }
 }
+
+export default connect(
+    store => ({
+        showingDate: store.showingDate
+    }),
+    dispatch => ({
+        nextMonth: () => dispatch({ type: "SET_SHOWING_DATE_NEXT_MONTH" }),
+        prevMonth: () => dispatch({ type: "SET_SHOWING_DATE_PREV_MONTH" })
+    }),
+
+)(MonthPicker);

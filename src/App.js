@@ -2,37 +2,15 @@ import React, { Component } from 'react';
 import './App.css';
 import LeftPart from './components/LeftPart';
 import RightPart from "./components/RightPart";
-import getEventsInShowingMonth from "./utils/getEventsInShowingMonth";
 import findIntersections from "./utils/findIntersections";
 
-class App extends Component {
+
+export default class App extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      showingDate: new Date(),
-      viewType: "full",
-      dateInAddForm: new Date(),
-      events: [
-        {
-          title: "title5",
-          startTime: new Date((new Date()).setHours(11, 11, 0)),
-          finishTime: new Date((new Date()).setHours(11, 12, 0)),
-          isEveryYear: false
-        },
-        {
-          title: "title2",
-          startTime: new Date((new Date()).setHours(16, 22, 0)),
-          finishTime: new Date((new Date()).setHours(17, 0, 0)),
-          isEveryYear: false
-        },
-        {
-          title: "title1",
-          startTime: new Date((new Date()).setHours(13, 22, 0)),
-          finishTime: new Date((new Date()).setHours(14, 0, 0)),
-          isEveryYear: false
-        }        
-      ]
+
     }
 
     this.setToday = this.setToday.bind(this);
@@ -86,10 +64,10 @@ class App extends Component {
 
 
   setNextMonth() {
-    const currentDate = this.state.showingDate;
-    this.setState({
-      showingDate: new Date(currentDate.setMonth(currentDate.getMonth() + 1))
-    });
+    /* const currentDate = this.state.showingDate;
+     this.setState({
+       showingDate: new Date(currentDate.setMonth(currentDate.getMonth() + 1))
+     });*/
   }
 
   setPrevMonth() {
@@ -109,24 +87,9 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <LeftPart
-          handleInputDate={this.handleClickOnCell}
-          date={this.state.dateInAddForm}
-          handleAddEvent={this.handleAddEvent}
-        />
-        <RightPart
-          handleClickOnCell={this.handleClickOnCell}
-          events={getEventsInShowingMonth(this.state.events, this.state.showingDate)}
-          handleChangeViewTypeInput={this.handleInputChange}
-          viewType={this.state.viewType}
-          setToday={this.setToday}
-          setNextMonth={this.setNextMonth}
-          setPrevMonth={this.setPrevMonth}
-          showingDate={this.state.showingDate}
-        />
+        <LeftPart />
+        <RightPart />
       </div>
     );
   }
 }
-
-export default App;

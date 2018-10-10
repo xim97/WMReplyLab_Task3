@@ -1,6 +1,8 @@
 import React, { Component, Fragment } from "react";
+import { connect } from "react-redux";
+import getEventsInShowingMonth from "../utils/getEventsInShowingMonth";
 
-export default class CalendarCell extends Component {
+class CalendarCell extends Component {
     constructor(props) {
         super(props);
 
@@ -9,7 +11,7 @@ export default class CalendarCell extends Component {
 
     clickOnCell() {
         if (this.props.showingDate.getMonth() === this.props.item.getMonth()) {
-            this.props.handleClickOnCell(this.props.item);
+            this.props.setInputDate(this.props.item);
         }
     }
 
@@ -62,3 +64,14 @@ export default class CalendarCell extends Component {
         );
     }
 }
+
+export default connect(
+    store => ({
+        events: getEventsInShowingMonth(store.events, store.showingDate),
+        viewType: store.viewType,
+        showingDate: store.showingDate,
+    }),
+    dispatch => ({
+        setInputDate: (date) => dispatch({ type: "SET_INPUT_DATE", date: date })
+    })
+)(CalendarCell);

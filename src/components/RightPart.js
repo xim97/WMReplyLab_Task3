@@ -4,33 +4,27 @@ import Calendar from "./Calendar";
 import getDataForGrid from "../utils/getDataForGrid";
 import getFirstMonday from "../utils/getFirstMonday";
 import getLastSunday from "../utils/getLastSunday";
+import { connect } from "react-redux";
 
-export default class RightPart extends Component {
+class RightPart extends Component {
     render() {
-        let dataForGrid, numberOfWeeks;
+        let dataForGrid;
         const firstMonday = getFirstMonday(this.props.showingDate),
             lastSunday = getLastSunday(this.props.showingDate);
-        dataForGrid = getDataForGrid(firstMonday, lastSunday);       
+        dataForGrid = getDataForGrid(firstMonday, lastSunday);
         return (
             <div className="right-part">
-                <HeaderRightPart
-                    handleChangeViewTypeInput={this.props.handleChangeViewTypeInput}
-                    viewType={this.props.viewType}
-                    setToday={this.props.setToday}
-                    setNextMonth={this.props.setNextMonth}
-                    setPrevMonth={this.props.setPrevMonth}
-                    showingDate={this.props.showingDate}
-                />                
+                <HeaderRightPart />
                 <Calendar
-                        handleClickOnCell={this.props.handleClickOnCell}
-                        events={this.props.events}
-                        viewType={this.props.viewType}
-                        numberOfWeeks={numberOfWeeks}
-                        dataForGrid={dataForGrid}
-                        showingDate={this.props.showingDate}
-                    />
-
+                    dataForGrid={dataForGrid}
+                />
             </div>
         );
     }
 }
+
+export default connect(store => {
+    return {
+        showingDate: store.showingDate
+    }
+})(RightPart);

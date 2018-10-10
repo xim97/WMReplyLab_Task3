@@ -1,48 +1,36 @@
 import React, { Component } from "react";
 import getDateForInput from "../utils/getDateForInput";
+import { connect } from "react-redux";
+import findIntersections from "../utils/findIntersections";
 
-export default class LeftPart extends Component {
+class LeftPart extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            title: "",
-            startTime: "",
-            finishTime: "",
-            isEveryYear: false
-        }
 
-        this.onInputChange = this.onInputChange.bind(this);
-        this.onInputDate = this.onInputDate.bind(this);
         this.onAddClick = this.onAddClick.bind(this);
     }
 
     onAddClick() {
-        if (this.state.startTime > this.state.finishTime) {
+        if (this.props.startTime > this.props.finishTime) {
             window.alert("Время начала события позже времени конца, исправьте");
         } else {
-            this.setState({
-                title: "",
-                startTime: "",
-                finishTime: "",
-                isEveryYear: false
-            });
-            this.props.handleAddEvent(this.state)
+            let startTimeHour, startTimeMinute, finishTimeHour, finishTimeMinute;
+            [startTimeHour, startTimeMinute] = this.props.startTime.split(":");
+            [finishTimeHour, finishTimeMinute] = this.props.finishTime.split(":");
+            let addingEvent = {
+                title: this.props.title,
+                isEveryYear: this.props.isEveryYear,
+                startTime: new Date((new Date(this.props.date)).setHours(startTimeHour, startTimeMinute)),
+                finishTime: new Date((new Date(this.props.date)).setHours(finishTimeHour, finishTimeMinute))
+            }
+            let confirmationAdding = true;
+            if (findIntersections(this.props.events, addingEvent)) {
+                confirmationAdding = window.confirm("Новое событие пересекается с уже созданными, хотите его добавить?");
+            }
+            if (confirmationAdding) {
+                this.props.addNewEvent(addingEvent);
+            }
         }
-    }
-
-    onInputChange(event) {
-        const value = event.target.type !== "checkbox" ? event.target.value : event.target.checked;
-        this.setState({
-            [event.target.name]: value
-        });
-    }
-
-    onInputDate(event) {
-        const value = event.target.value;
-        this.props.handleInputDate(value);
-        this.setState({
-            date: this.props.date
-        });
     }
 
     render() {
@@ -50,17 +38,17 @@ export default class LeftPart extends Component {
             <form className="left-part">
                 <label>Событие</label>
                 <input
-                    onChange={this.onInputChange}
+                    onChange={(event) => this.props.inputTitle(event.target.value)}
                     required={true}
                     name="title"
                     type="text"
-                    value={this.state.title}
+                    value={this.props.title}
                     placeholder="Введите событие"
                 />
                 <label>Дата</label>
                 <input
                     required={true}
-                    onChange={this.onInputDate}
+                    onChange={(event) => this.props.inputDate(event.target.value)}
                     value={getDateForInput(this.props.date)}
                     name="date"
                     type="date"
@@ -68,23 +56,23 @@ export default class LeftPart extends Component {
                 <label>Время начала</label>
                 <input
                     required={true}
-                    onChange={this.onInputChange}
+                    onChange={(event) => this.props.inputStartTime(event.target.value)}
                     name="startTime"
                     type="time"
-                    value={this.state.startTime}
+                    value={this.props.startTime}
                 />
                 <label>Время конца</label>
                 <input
                     required={true}
-                    onChange={this.onInputChange}
+                    onChange={(event) => this.props.inputFinishTime(event.target.value)}
                     name="finishTime"
                     type="time"
-                    value={this.state.finishTime}
+                    value={this.props.finishTime}
                 />
                 <label>Событие ежегодное?</label>
                 <input
-                    checked={this.state.isEveryYear}
-                    onChange={this.onInputChange}
+                    checked={this.props.isEveryYear}
+                    onChange={(event) => this.props.inputEveryYear(event.target.checked)}
                     name="isEveryYear"
                     type="checkbox"
                 />
@@ -97,3 +85,22 @@ export default class LeftPart extends Component {
         );
     }
 }
+
+export default connect(
+    store => ({
+        title: store.title,
+        date: store.date,
+        startTime: store.startTime,
+        finishTime: store.finishTime,
+        isEveryYear: store.isEveryYear,
+        events: store.events
+    }),
+    dispatch => ({
+        inputTitle: (title) => dispatch({ type: "SET_INPUT_TITLE", title: title }),
+        inputDate: (date) => dispatch({ type: "SET_INPUT_DATE", date: date }),
+        inputStartTime: (time) => dispatch({ type: "SET_INPUT_START_TIME", time: time }),
+        inputFinishTime: (time) => dispatch({ type: "SET_INPUT_FINISH_TIME", time: time }),
+        inputEveryYear: (isEveryYear) => dispatch({ type: "SET_INPUT_EVERYYEAR", isEveryYear: isEveryYear }),
+        addNewEvent: (event) => dispatch({ type: "ADD_EVENT", event: event })
+    })
+)(LeftPart);

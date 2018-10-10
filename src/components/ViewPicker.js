@@ -1,6 +1,17 @@
 import React, { Component, Fragment } from "react";
+import { connect } from "react-redux";
 
-export default class ViewPicker extends Component {
+class ViewPicker extends Component {
+    constructor(props) {
+        super(props);
+
+        this.handleChangeViewTypeInput = this.handleChangeViewTypeInput.bind(this);
+    }
+
+    handleChangeViewTypeInput(event) {
+        this.props.setViewType(event.target.value);
+    }
+
     render() {
         return (
             <Fragment>
@@ -10,7 +21,7 @@ export default class ViewPicker extends Component {
                         name="viewType"
                         value="short"
                         checked={this.props.viewType === "short"}
-                        onChange={this.props.handleChangeViewTypeInput}
+                        onChange={this.handleChangeViewTypeInput}
                     />
                     Краткое
                     </label>
@@ -20,7 +31,7 @@ export default class ViewPicker extends Component {
                         name="viewType"
                         value="full"
                         checked={this.props.viewType === "full"}
-                        onChange={this.props.handleChangeViewTypeInput}
+                        onChange={this.handleChangeViewTypeInput}
                     />
                     Полное
                     </label>
@@ -29,3 +40,12 @@ export default class ViewPicker extends Component {
 
     }
 }
+
+export default connect(
+    store => ({
+        viewType: store.viewType
+    }),
+    dispatch => ({
+        setViewType: (viewType) => dispatch({ type: "SET_VIEW_TYPE", viewType: viewType })
+    })
+)(ViewPicker);
